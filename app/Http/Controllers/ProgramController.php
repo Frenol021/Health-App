@@ -26,8 +26,9 @@ class ProgramController extends Controller
         $client->email = $validatedData['email'];
         $client->phone = $validatedData['phone'];
         $client->save();
-
-        return response()->json(['message' => 'Client created successfully'], 201);
+        Alert::success('Client Created', 'Client created successfully.');
+        return redirect()->back();  // Redirect back to show success
+        //return response()->json(['message' => 'Client created successfully'], 201);
     }
 
     //fetch all clients
@@ -52,7 +53,9 @@ class ProgramController extends Controller
         $program->description = $validatedData['description'];
         $program->save();
 
-        return response()->json(['message' => 'Program created successfully'], 201);
+        Alert::success('Program Created', 'Program created successfully.');
+        return redirect()->back();  // Redirect back to show success
+        //return response()->json(['message' => 'Program created successfully'], 201);
     }
     //fetch all programs
     public function getPrograms()
@@ -116,6 +119,14 @@ class ProgramController extends Controller
 
         return response()->json($clients, 200);
     }
-    
+    //get client profile + with programs they are enrolled in
+    public function getClientProfile($clientId)
+    {
+        // Find the client
+        $client = Client::with('programs')->findOrFail($clientId);
+
+        return response()->json($client, 200);
+    }
+    // get all programs a client is enrolled in
 
 }
