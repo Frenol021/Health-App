@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Client;
 use App\Models\Program;
+use RealRashid\SweetAlert\Facades\Alert;
 class ProgramController extends Controller
 {
 
@@ -76,14 +77,17 @@ class ProgramController extends Controller
 
         // Check if already enrolled
         if ($client->programs()->where('program_id', $programId)->exists()) {
-            return response()->json(['message' => 'Client already enrolled.'], 409);
+            Alert::error('Enrollment Failed', 'Client is already enrolled.');
+            return redirect()->back();  // Ensures the page reloads
         }
 
         // Attach (enroll)
         $client->programs()->attach($programId);
 
-        return response()->json(['message' => 'Enrolled successfully.'], 200);
+        Alert::success('Enrollment Successful', 'Client enrolled in program successfully.');
+        return redirect()->back();  // Redirect back to show success
     }
+
     // unenroll a client from a program
     public function unenrollClientFromProgram($clientId, $programId)
     {
@@ -112,6 +116,6 @@ class ProgramController extends Controller
 
         return response()->json($clients, 200);
     }
-
+    
 
 }
