@@ -12,4 +12,8 @@ class Client extends Model
         'email',
         'phone',
     ];
+    public function programs()
+    {
+        return $this->belongsToMany(Program::class, 'enrollments');
+    }
 }

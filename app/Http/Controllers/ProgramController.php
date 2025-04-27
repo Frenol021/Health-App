@@ -56,8 +56,62 @@ class ProgramController extends Controller
     //fetch all programs
     public function getPrograms()
     {
+        $clients = Client::all();
         $programs = Program::all();
-        return view('program', compact('programs'));
+        return view('program', compact('clients','programs'));
     }
+
+    // enroll a client in a program
+    public function enrollClientInProgram(Request $request)
+    {
+        $validatedData = $request->validate([
+            'client_id' => 'required|exists:clients,id',
+            'program_id' => 'required|exists:programs,id',
+        ]);
+
+        $clientId = $validatedData['client_id'];
+        $programId = $validatedData['program_id'];
+
+        $client = Client::findOrFail($clientId);
+
+        // Check if already enrolled
+        if ($client->programs()->where('program_id', $programId)->exists()) {
+            return response()->json(['message' => 'Client already enrolled.'], 409);
+        }
+
+        // Attach (enroll)
+        $client->programs()->attach($programId);
+
+        return response()->json(['message' => 'Enrolled successfully.'], 200);
+    }
+    // unenroll a client from a program
+    public function unenrollClientFromProgram($clientId, $programId)
+    {
+        // Find the client and program
+        $client = Client::findOrFail($clientId);
+        $program = Program::findOrFail($programId);
+
+        // Check if enrolled
+        if (!$client->programs()->where('program_id', $programId)->exists()) {
+            return response()->json(['message' => 'Client is not enrolled in this program'], 409);
+        }
+
+        // Unenroll the client
+        $client->programs()->detach($program->id);
+
+        return response()->json(['message' => 'Client unenrolled from program successfully'], 200);
+    }
+    // get all clients in a program
+    public function getClientsInProgram($programId)
+    {
+        // Find the program
+        $program = Program::findOrFail($programId);
+
+        // Get all clients in the program
+        $clients = $program->clients;
+
+        return response()->json($clients, 200);
+    }
+
 
 }
