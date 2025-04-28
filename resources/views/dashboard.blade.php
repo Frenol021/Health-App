@@ -71,7 +71,7 @@
                                     @foreach($clients as $client)
                                         <tr>
                                             <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                                            <td class="border px-4 py-2">{{ $client->name }}</td>
+                                            <td class="border px-4 py-2"> <a href="{{ route('clients.profile', ['id' => $client->id]) }}" class="text-white hover:underline">{{ $client->name }}</a> </td>
                                             <td class="border px-4 py-2">{{ $client->email }}</td>
                                             <td class="border px-4 py-2">{{ $client->phone }}</td>
                                         </tr>

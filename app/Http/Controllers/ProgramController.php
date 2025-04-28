@@ -125,8 +125,9 @@ class ProgramController extends Controller
         // Find the client
         $client = Client::with('programs')->findOrFail($clientId);
 
-        return response()->json($client, 200);
+        return view('client-profile', compact('client'));
     }
+
     // search for clients by name
     public function search(Request $request)
     {

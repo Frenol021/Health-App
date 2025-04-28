@@ -17,6 +17,7 @@ Route::get('/dashboard', [ProgramController::class, 'getClients'])
     ->name('programs');
 
     Route::get('client', [ProgramController::class, 'search'])->name('clients.name');
+    Route::get('/clientProfile/{id}', [ProgramController::class, 'getClientProfile'])->name('clients.profile');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
