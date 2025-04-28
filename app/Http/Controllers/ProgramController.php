@@ -141,7 +141,7 @@ class ProgramController extends Controller
                 })
                 ->paginate(10); // Paginate results (optional)
 
-            return view('program', compact('clients'));
+            return view('dashboard', compact('clients'));
         }
     }
 
