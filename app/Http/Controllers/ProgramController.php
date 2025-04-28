@@ -127,6 +127,22 @@ class ProgramController extends Controller
 
         return response()->json($client, 200);
     }
-    // get all programs a client is enrolled in
+    // search for clients by name
+    public function search(Request $request)
+    {
+        {
+            // Get the search query parameter
+            $search = $request->input('search');
+
+            // Query clients and filter by name if search is provided
+            $clients = Client::query()
+                ->when($search, function ($query, $search) {
+                    $query->where('name', 'like', "%{$search}%");
+                })
+                ->paginate(10); // Paginate results (optional)
+
+            return view('program', compact('clients'));
+        }
+    }
 
 }

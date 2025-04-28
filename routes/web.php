@@ -5,7 +5,7 @@ use App\Http\Controllers\ProgramController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Route::get('/dashboard', [ProgramController::class, 'getClients'])
@@ -15,7 +15,8 @@ Route::get('/dashboard', [ProgramController::class, 'getClients'])
     Route::get('programs', [ProgramController::class, 'getPrograms'])
     ->middleware(['auth', 'verified'])
     ->name('programs');
-    
+
+    Route::get('client', [ProgramController::class, 'search'])->name('clients.name');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
