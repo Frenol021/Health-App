@@ -19,12 +19,14 @@ Expose client profiles via a RESTful API for external systems.
 laravel, tailiwind, vite and mysql
 ## Installation & Setup
 ### clone the repo
+
+```bash
 git clone https://github.com/Frenol021/Health-App
 
 cd Health-app
 
 run both backend(laravel) ie **php artisan serve** and frontend ie **npm run dev**
-
+```
 ## Database Migration
 Create MySQL Table and migrate 
 
