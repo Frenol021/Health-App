@@ -1,0 +1,11 @@
+{
+    "build": {
+      "builder": "php"
+    },
+    "deploy": {
+      "startCommand": null,
+      "web": {
+        "root": "public"
+      }
+    }
+  }
