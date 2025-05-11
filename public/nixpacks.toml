@@ -1,0 +1,16 @@
+[phases.setup]
+nixPkgs = ['php82', 'php82Packages.php-fpm', 'php82Extensions.pdo_mysql', 'nodejs_18', 'nginx']
+
+[phases.build]
+cmds = [
+    'composer install --no-dev --optimize-autoloader',
+    'php artisan config:cache',
+    'php artisan migrate --force',
+    'npm ci',
+    'npm run build',
+    'cp config/nginx.conf /etc/nginx/nginx.conf',
+    'cp config/php-fpm.conf /app/config/php-fpm.conf'
+]
+
+[phases.start]
+cmd = 'php-fpm -y /app/config/php-fpm.conf'
