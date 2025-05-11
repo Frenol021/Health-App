@@ -1,8 +1,10 @@
 [phases.setup]
 nixPkgs = ['php82', 'php82Packages.php-fpm', 'php82Extensions.pdo_mysql', 'nodejs_18', 'nginx']
+aptPkgs = ['adduser']  # For www-data if needed
 
 [phases.build]
 cmds = [
+    'adduser --system --group www-data || true',  # Create www-data for alternative config
     'composer install --no-dev --optimize-autoloader',
     'php artisan config:cache',
     'php artisan migrate --force',
