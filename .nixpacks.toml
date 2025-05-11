@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ['php', 'phpPackages.composer', 'nodejs', 'corepack', 'nginx', 'gettext']
+
+[phases.build]
+cmds = [
+  'composer install --no-dev --optimize-autoloader',
+  'corepack enable',
+  'npm install',
+  'npm run build',
+  'chmod +x start.sh'
+]
+
+[start]
+cmd = './start.sh'
