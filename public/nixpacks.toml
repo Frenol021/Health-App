@@ -1,10 +1,10 @@
 [phases.setup]
 nixPkgs = ['php82', 'php82Packages.php-fpm', 'php82Extensions.pdo_mysql', 'nodejs_18', 'nginx']
-aptPkgs = ['adduser']  # For www-data if needed
+aptPkgs = ['adduser']
 
 [phases.build]
 cmds = [
-    'adduser --system --group www-data || true',  # Create www-data for alternative config
+    'adduser --system --group www-data || true',
     'composer install --no-dev --optimize-autoloader',
     'php artisan config:cache',
     'php artisan migrate --force',
@@ -15,4 +15,4 @@ cmds = [
 ]
 
 [phases.start]
-cmd = 'php-fpm -y /app/config/php-fpm.conf'
+cmd = 'php-fpm -y /app/config/php-fpm.conf & nginx -g "daemon off;"'
