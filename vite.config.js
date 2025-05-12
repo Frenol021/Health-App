@@ -8,9 +8,4 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    build: {
-        outDir: 'public/build/.vite/', // Make sure build files go to public/build
-        manifest: true,  // Enable the generation of a manifest.json file
-    },
 });
-
