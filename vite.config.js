@@ -8,4 +8,8 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    build: {
+        outDir: 'public/build', // Output build files to public/build
+        manifest: true,  // Generate manifest.json for Laravel's @vite directive
+    },
 });
