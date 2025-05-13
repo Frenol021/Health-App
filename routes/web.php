@@ -36,6 +36,13 @@ Route::get('/cookie-test', function () {
     );
 });
 
+Route::get('/debug-cookies', function (\Illuminate\Http\Request $request) {
+    return response()->json([
+        'received_cookies' => $request->cookies->all(),
+        'session_id' => session()->getId(),
+        'csrf_token' => csrf_token(),
+    ]);
+});
 
 Route::get('/debug-session', function () {
     session(['test_key' => 'test_value']);
