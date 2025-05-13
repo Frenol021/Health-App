@@ -43,7 +43,10 @@ Route::get('/debug-session', function () {
 });
 
 Route::get('/check-session', function () {
-    return session('test_key', 'not set');
+    dd([
+        'session_cookie' => $_COOKIE['laravel_session'] ?? 'not sent',
+        'session_value' => session('test_key', 'not set'),
+    ]);
 });
 
 
