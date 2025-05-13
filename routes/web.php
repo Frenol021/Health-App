@@ -45,25 +45,36 @@ Route::get('/test-cookies', function () {
 });
 
 
-Route::get('/debug-cookies', function (\Illuminate\Http\Request $request) {
-    return response()->json([
-        'received_cookies' => $request->cookies->all(),
-        'session_id' => session()->getId(),
-        'csrf_token' => csrf_token(),
-    ]);
-});
-
 Route::get('/debug-session', function () {
     session(['test_key' => 'test_value']);
-    return 'Session set';
+    return response('Session set')->withCookie(cookie('laravel_session', session()->getId(), 120));
 });
 
 Route::get('/check-session', function () {
-    dd([
+    return response()->json([
         'session_cookie' => $_COOKIE['laravel_session'] ?? 'not sent',
         'session_value' => session('test_key', 'not set'),
+        'session_id' => session()->getId(),
+        'session_files' => glob(storage_path('framework/sessions/*')) ?: ['no session files'],
+        'storage_writable' => is_writable(storage_path('framework/sessions')),
+        'response_headers' => headers_list(),
+        'port' => env('PORT', 'unknown'),
     ]);
 });
 
+Route::get('/test-assets', function () {
+    try {
+        $manifest = file_get_contents(public_path('build/manifest.json'));
+        return response()->json([
+            'status' => 'success',
+            'manifest' => json_decode($manifest, true),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+});
 
 require __DIR__.'/auth.php';
