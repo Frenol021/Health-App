@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -44,17 +45,23 @@ Route::get('/test-cookies', function () {
     );
 });
 
-
 Route::get('/debug-session', function () {
     session(['test_key' => 'test_value']);
-    return response('Session set')->withCookie(cookie('laravel_session', session()->getId(), 120));
+    $sessionId = session()->getId();
+    Log::info('Setting session ID: ' . $sessionId);
+    $cookie = cookie('laravel_session', $sessionId, 120, '/', '', true, true, false, 'lax');
+    $response = response('Session set')->withCookie($cookie);
+    Log::info('Response headers: ' . json_encode(headers_list()));
+    return $response;
 });
 
 Route::get('/check-session', function () {
+    $sessionId = session()->getId();
+    Log::info('Checking session ID: ' . $sessionId);
     return response()->json([
         'session_cookie' => $_COOKIE['laravel_session'] ?? 'not sent',
         'session_value' => session('test_key', 'not set'),
-        'session_id' => session()->getId(),
+        'session_id' => $sessionId,
         'session_files' => glob(storage_path('framework/sessions/*')) ?: ['no session files'],
         'storage_writable' => is_writable(storage_path('framework/sessions')),
         'response_headers' => headers_list(),
