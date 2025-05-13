@@ -29,19 +29,21 @@ Route::middleware('auth')->group(function () {
 });
 
 // test cookies in production
-Route::get('/test-cookie', function () {
+
+Route::get('/test-cookies', function () {
     return response('Cookie set')->cookie(
         'test_cookie',
         'test_value',
-        60, // minutes
-        null,
-        '.railway.app', // or full domain
+        60,
+        '/', // path
+        null, // ← no domain
         true, // secure
         true, // httpOnly
         false,
-        'Lax' // SameSite
+        'Lax'
     );
 });
+
 
 Route::get('/debug-cookies', function (\Illuminate\Http\Request $request) {
     return response()->json([
