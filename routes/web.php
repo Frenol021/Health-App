@@ -29,10 +29,17 @@ Route::middleware('auth')->group(function () {
 });
 
 // test cookies in production
-Route::get('/cookie-test', function () {
-    return response('Test cookie')->cookie(
-        'my_cookie', 'test_value', 60,
-        '/', 'health-app-production-c58b.up.railway.app', true, false, false, 'None'
+Route::get('/test-cookie', function () {
+    return response('Cookie set')->cookie(
+        'test_cookie',
+        'test_value',
+        60, // minutes
+        null,
+        '.railway.app', // or full domain
+        true, // secure
+        true, // httpOnly
+        false,
+        'Lax' // SameSite
     );
 });
 
