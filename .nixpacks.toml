@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ['php82', 'php82Packages.php-fpm', 'php82Extensions.pdo_mysql', 'nodejs_18', 'nginx']
+nixPkgs = ['php82', 'php82Packages.composer', 'php82Packages.php-fpm', 'php82Extensions.pdo_mysql', 'nodejs_18', 'nginx']
 aptPkgs = ['adduser']
 
 [phases.build]
