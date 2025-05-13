@@ -28,4 +28,23 @@ Route::middleware('auth')->group(function () {
 
 });
 
+// test cookies in production
+Route::get('/cookie-test', function () {
+    return response('Test cookie')->cookie(
+        'my_cookie', 'test_value', 60,
+        '/', 'health-app-production-c58b.up.railway.app', true, false, false, 'None'
+    );
+});
+
+
+Route::get('/debug-session', function () {
+    session(['test_key' => 'test_value']);
+    return 'Session set';
+});
+
+Route::get('/check-session', function () {
+    return session('test_key', 'not set');
+});
+
+
 require __DIR__.'/auth.php';
