@@ -1,14 +1,23 @@
 [phases.setup]
-nixPkgs = ['php', 'phpPackages.composer', 'nodejs', 'corepack', 'nginx', 'gettext']
+nixPkgs = ['php82', 'php82Packages.php-fpm', 'php82Extensions.pdo_mysql', 'nodejs_18', 'nginx']
+aptPkgs = ['adduser']
 
 [phases.build]
 cmds = [
+  'adduser --system --group www-data || true',
   'composer install --no-dev --optimize-autoloader',
-  'corepack enable',
-  'npm install',
+  'php artisan config:clear',
+  'php artisan cache:clear',
+  'mkdir -p storage/framework/sessions',
+  'chmod -R 775 storage',
+  'chown -R www-data:www-data storage',
+  'php artisan migrate --force',
+  'npm ci',
   'npm run build',
-  'chmod +x start.sh'
+  'mkdir -p /etc/nginx',
+  'cp config/nginx.conf /etc/nginx/nginx.conf',
+  'cp config/php-fpm.conf /app/config/php-fpm.conf'
 ]
 
-[start]
-cmd = './start.sh'
+[phases.start]
+cmd = 'php-fpm -y /app/config/php-fpm.conf & nginx -g "daemon off;"'
