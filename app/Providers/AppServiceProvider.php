@@ -30,18 +30,18 @@ class AppServiceProvider extends ServiceProvider
         Route::middleware('api')
             ->prefix('api') // Optional: Adds `/api` prefix
             ->group(base_path('routes/api.php'));
-
-        if (env('SESSION_SECURE_COOKIE')) {
-            Cookie::defaults(function() {
-                return Cookie::make(
-                    name: config('session.cookie'),
-                    domain: config('session.domain'),
-                    secure: true,
-                    httpOnly: true,
-                    sameSite: config('session.same_site'),
-                    partitioned: true
+   // Only configure cookies if in production and not during build
+    if ($this->app->environment('production') && !$this->app->runningInConsole()) {
+        \Illuminate\Support\Facades\Cookie::defaults(function() {
+            return \Illuminate\Support\Facades\Cookie::make(
+                name: config('session.cookie'),
+                domain: config('session.domain'),
+                secure: true,
+                httpOnly: true,
+                sameSite: config('session.same_site', 'lax'),
+                partitioned: true
             );
         });
-        }
+    }
     }
 }
