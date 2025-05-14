@@ -34,7 +34,10 @@ cmds = [
 
 [phases.start]
 cmd = '''
-chown -R www-data:www-data storage bootstrap/cache || true && \
+mkdir -p /run/php && \
+chown -R www-data:www-data /run/php && \
+mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache && \
+chown -R www-data:www-data storage bootstrap/cache && \
 chmod -R 775 storage bootstrap/cache && \
 php artisan migrate --force && \
 php-fpm -y /app/config/php-fpm.conf & \
