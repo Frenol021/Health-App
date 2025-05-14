@@ -1,7 +1,7 @@
 [phases.setup]
 nixPkgs = [
   "php82",
-  "php82Packages.composer",     # Composer is installed here
+  "php82Packages.composer",
   "php82Packages.php-fpm",
   "php82Extensions.pdo_mysql",
   "nodejs_18",
@@ -9,10 +9,14 @@ nixPkgs = [
 ]
 aptPkgs = ["adduser"]
 
+cmds = [
+  "echo 'Setup Phase: Installing Composer'"
+]
+
 [phases.build]
 cmds = [
-  "adduser --system --group www-data || true",
-  "composer install --no-dev --optimize-autoloader",       # Ensuring composer is available
+  "echo 'Build Phase: Running composer install'",
+  "composer install --no-dev --optimize-autoloader",
   "php artisan config:clear",
   "php artisan cache:clear",
   "mkdir -p storage/framework/sessions",
