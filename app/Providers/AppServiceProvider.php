@@ -31,15 +31,17 @@ class AppServiceProvider extends ServiceProvider
             ->prefix('api') // Optional: Adds `/api` prefix
             ->group(base_path('routes/api.php'));
 
+        if (env('SESSION_SECURE_COOKIE')) {
             Cookie::defaults(function() {
-        return Cookie::make(
-            name: 'laravel_session',
-            domain: '.railway.app', // Leading dot for subdomains
-            secure: true,           // HTTPS-only
-            httpOnly: true,         // Prevent JS access
-            sameSite: 'none',        // Required for Railway
-            partitioned: true        // Chrome 2024+ requirement
-        );
-    });
+                return Cookie::make(
+                    name: config('session.cookie'),
+                    domain: config('session.domain'),
+                    secure: true,
+                    httpOnly: true,
+                    sameSite: config('session.same_site'),
+                    partitioned: true
+            );
+        });
+        }
     }
 }
