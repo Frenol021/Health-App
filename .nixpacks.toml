@@ -27,4 +27,5 @@ cmds = [
 ]
 
 [phases.start]
-cmd = "php-fpm -y /etc/php-fpm.conf & nginx -c /etc/nginx/nginx.conf -g 'daemon off;'"
+cmd = 'php-fpm -y /app/config/php-fpm.conf & nginx -c /app/config/nginx.conf -g "daemon off;"'
+
