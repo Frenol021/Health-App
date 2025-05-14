@@ -10,7 +10,10 @@ nixPkgs = [
 aptPkgs = ["adduser"]
 
 cmds = [
-  "echo 'Setup Phase: Installing Composer'"
+  "echo 'Setup Phase: Installing Composer'",
+  "php -v",  # Check PHP version
+  "composer --version",  # Check if Composer is installed
+  "echo 'Setup Phase Complete'"
 ]
 
 [phases.build]
