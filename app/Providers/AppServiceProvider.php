@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
-
+use Illuminate\Support\Facades\Cookie;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -30,5 +30,16 @@ class AppServiceProvider extends ServiceProvider
         Route::middleware('api')
             ->prefix('api') // Optional: Adds `/api` prefix
             ->group(base_path('routes/api.php'));
+
+            Cookie::defaults(function() {
+        return Cookie::make(
+            name: 'laravel_session',
+            domain: '.railway.app', // Leading dot for subdomains
+            secure: true,           // HTTPS-only
+            httpOnly: true,         // Prevent JS access
+            sameSite: 'none',        // Required for Railway
+            partitioned: true        // Chrome 2024+ requirement
+        );
+    });
     }
 }
