@@ -83,5 +83,13 @@ Route::get('/test-assets', function () {
         ], 500);
     }
 });
+// routes/web.php
+Route::get('/raw-cookie', function() {
+    return response('Test')
+        ->withHeaders([
+            'Cache-Control' => 'no-store',
+            'Set-Cookie' => '__Secure-health_session=test_value; Domain=.railway.app; Path=/; Secure; HttpOnly; SameSite=None; Partitioned'
+        ]);
+});
 
 require __DIR__.'/auth.php';
