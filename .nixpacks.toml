@@ -22,7 +22,7 @@ cmds = [
   "mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache",
   "mkdir -p /run/php",
   "chmod -R 775 storage bootstrap/cache /run/php",
-  "chown -R nobody:nobody storage bootstrap/cache /run/php || true",
+  "chown -R 999:999 storage bootstrap/cache /run/php || true",
   "php artisan migrate --force",
   "npm ci",
   "npm run build",
@@ -36,7 +36,7 @@ cmds = [
 [phases.start]
 cmd = '''
 echo "Current user: $(whoami)" && \
-chown -R nobody:nobody storage bootstrap/cache /run/php || true && \
+chown -R 999:999 storage bootstrap/cache /run/php || true && \
 chmod -R 775 storage bootstrap/cache /run/php && \
 php artisan migrate --force && \
 php-fpm -y /app/config/php-fpm.conf & \
