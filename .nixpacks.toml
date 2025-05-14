@@ -41,5 +41,6 @@ chown -R www-data:www-data storage bootstrap/cache && \
 chmod -R 775 storage bootstrap/cache && \
 php artisan migrate --force && \
 php-fpm -y /app/config/php-fpm.conf & \
+sleep 2 && \
 nginx -c /etc/nginx/nginx.conf -g "daemon off;"
 '''
